@@ -49,8 +49,14 @@ jsDelivr
 <head>
   <!-- Import style -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@cgxqd/monaco-editor/dist/index.css" />
+  <!-- jsDelivr + Github 加速 -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cgxqd/monaco-editor/dist/index.css" /> -->
+  
   <!-- Import @cgxqd/monaco-editor -->
   <script src="https://cdn.jsdelivr.net/npm/@cgxqd/monaco-editor"></script>
+  <!-- jsDelivr + Github 加速 -->
+  <!-- <script src="https://cdn.jsdelivr.net/gh/cgxqd/monaco-editor/dist/index.global.js"></script> -->
+  
 </head>
 ```
 
