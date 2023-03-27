@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./dist/index.global.js"></script>
+    <link rel="stylesheet" href="./dist/index.css">
+    <style>
+        body {
+            margin: 0
+        }
+
+        #app {
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script type="module">
+        fetch('./package.json')
+            .then(response => response.json())
+            .then(pkg => {
+                // 设置 monaco worker 地址
+                monaco.initWorkerUrl()
+                // 创建编辑器
+                const Editor = monaco.editor.create(app, {
+                    value: JSON.stringify(pkg, null, 2),
+                    language: "json",
+                    theme: "vs-dark",
+                    automaticLayout: true,
+                });
+            })
+
+    </script>
+</body>
+
+</html>
