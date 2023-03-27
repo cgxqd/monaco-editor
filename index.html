@@ -27,7 +27,7 @@
             .then(response => response.json())
             .then(pkg => {
                 // 设置 monaco worker 地址
-                monaco.initWorkerUrl()
+                monaco.initWorkerUrl('/monaco-editor')
                 // 创建编辑器
                 const Editor = monaco.editor.create(app, {
                     value: JSON.stringify(pkg, null, 2),
