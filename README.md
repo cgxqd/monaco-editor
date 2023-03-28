@@ -68,6 +68,23 @@ jsDelivr
 </head>
 ```
 
+## api
+
+### monaco.initWorkerUrl(basePath, languages) 初始化 Worker
+
+> 注意：initWorkerUrl 方法需要 await 异步等待后执行 editor.create api
+
+```
+declare const initWorkerUrl: (basePath?: string, languages?: languages) => Promise<void>;
+```
+
+-   basePath `string`：CDN 前缀地址
+-   languages `(ts|css|json|html)[]`: 加载对应语言的 worker
+-   -   editor language 为 `typescript` | `javascript`时, languages 需要包含 `ts`
+-   -   editor language 为 `css` | `scss` | `less`时，languages 需要包含 `css`
+-   -   editor language 为 `json`时，languages 需要包含 `json`
+-   -   editor language 为 `html` | `handlebars` | `razor`时，languages 需要包含 `html`
+
 ## 项目中使用
 
 ### CDN
@@ -85,12 +102,12 @@ const basePath = "https://cdn.jsdelivr.net/npm/@cgxqd/monaco-editor";
 const { editor, initWorkerUrl } = await loadScript(basePath, "monaco");
 
 // 设置 monaco worker 地址
-initWorkerUrl(basePath);
+await initWorkerUrl(basePath, ["html"]);
 
 // 创建编辑器
-editor.create(document.querySelector('body'), {
-	value: '',
-	language: "json",
+editor.create(document.querySelector("body"), {
+	value: "",
+	language: "html",
 	theme: "vs-dark",
 	automaticLayout: true,
 });
@@ -104,11 +121,11 @@ import "@cgxqd/monaco-editor/dist/index.css";
 
 const basePath = "https://cdn.jsdelivr.net/npm/@cgxqd/monaco-editor";
 // 设置 monaco worker 地址
-initWorkerUrl(basePath);
+await initWorkerUrl(basePath, ["ts"]);
 // 创建编辑器
-editor.create(document.querySelector('body'), {
-	value: '',
-	language: "html",
+editor.create(document.querySelector("body"), {
+	value: "",
+	language: "javascript",
 	theme: "vs-dark",
 	automaticLayout: true,
 });

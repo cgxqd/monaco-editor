@@ -25,16 +25,20 @@
     <script type="module">
         fetch('./package.json')
             .then(response => response.json())
-            .then(pkg => {
-                // 设置 monaco worker 地址
-                monaco.initWorkerUrl('/monaco-editor')
-                // 创建编辑器
-                const Editor = monaco.editor.create(app, {
-                    value: JSON.stringify(pkg, null, 2),
-                    language: "json",
-                    theme: "vs-dark",
-                    automaticLayout: true,
-                });
+            .then(async pkg => {
+                const basePath = "https://cdn.jsdelivr.net/npm/@cgxqd/monaco-editor";
+                monaco
+                    // 初始化monaco worker
+                    .initWorkerUrl(basePath, ['json', 'ts', 'html', 'css'])
+                    // 创建编辑器
+                    .then(() =>
+                        monaco.editor.create(app, {
+                            value: JSON.stringify(pkg, null, 2),
+                            language: "json",
+                            theme: "vs-dark",
+                            automaticLayout: true,
+                        })
+                    )
             })
 
     </script>

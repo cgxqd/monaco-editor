@@ -1,5 +1,7 @@
 export * from 'monaco-editor';
 
-declare const initWorkerUrl: (basePath?: string) => void;
+type languages = ("ts" | "css" | "html" | "json")[];
+
+declare const initWorkerUrl: (basePath?: string, languages?: languages) => Promise<void>;
 
 export { initWorkerUrl };

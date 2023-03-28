@@ -1,5 +1,5 @@
 export * from 'monaco-editor';
 
-var t=(o="")=>{typeof self<"u"&&(self.MonacoEnvironment={getWorkerUrl(s,r){return r==="json"?o+"/dist/worker/json.global.js":r==="css"||r==="scss"||r==="less"?o+"/dist/worker/css.global.js":r==="html"||r==="handlebars"||r==="razor"?o+"/dist/worker/html.global.js":r==="typescript"||r==="javascript"?o+"/dist/worker/ts.global.js":o+"/dist/worker/editor.global.js"}});};
+function u(t,r){let o=(...n)=>{let i=r?r.apply(this,n):n[0],s=o.cache;if(s.has(i))return s.get(i);let a=t.apply(this,n);return o.cache=s.set(i,a)||s,a};return o.cache=new Map,o}async function f(t){let o=await(await fetch(t)).text();return URL.createObjectURL(new Blob([o]))}var c=u(f);async function k(t,r=[]){return {jsonWorker:r.includes("json")?await c(t+"/dist/worker/json.global.js"):"",cssWorker:r.includes("css")?await c(t+"/dist/worker/css.global.js"):"",htmlWorker:r.includes("html")?await c(t+"/dist/worker/html.global.js"):"",tsWorker:r.includes("ts")?await c(t+"/dist/worker/ts.global.js"):"",editorWorker:await c(t+"/dist/worker/editor.global.js")}}var m=async(t="",r=[])=>{let{jsonWorker:o,cssWorker:n,htmlWorker:i,tsWorker:s,editorWorker:a}=await k(t,r);typeof self<"u"&&(self.MonacoEnvironment={getWorkerUrl(d,e){return e==="json"?o:e==="css"||e==="scss"||e==="less"?n:e==="html"||e==="handlebars"||e==="razor"?i:e==="typescript"||e==="javascript"?s:a}});};
 
-export { t as initWorkerUrl };
+export { m as initWorkerUrl };
