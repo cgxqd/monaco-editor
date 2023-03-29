@@ -16,29 +16,44 @@
         #app {
             height: 100vh;
             width: 100vw;
+            display: flex;
+        }
+
+        #app>* {
+            height: 100%;
+            width: 50%;
+            border: 0;
         }
     </style>
 </head>
 
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <div class="code"></div>
+        <iframe class="preview"></iframe>
+    </div>
     <script type="module">
-        fetch('./package.json')
-            .then(response => response.json())
-            .then(async pkg => {
+        fetch('./template/index.xml')
+            .then(response => response.text())
+            .then(async temp => {
                 const basePath = "https://cdn.jsdelivr.net/npm/@cgxqd/monaco-editor";
                 monaco
                     // 初始化monaco worker
                     .initWorkerUrl(basePath, ['json', 'ts', 'html', 'css'])
                     // 创建编辑器
-                    .then(() =>
-                        monaco.editor.create(app, {
-                            value: JSON.stringify(pkg, null, 2),
-                            language: "json",
+                    .then(() => {
+                        const Editor = monaco.editor.create(document.querySelector('.code'), {
+                            value: temp,
+                            language: "html",
                             theme: "vs-dark",
                             automaticLayout: true,
                         })
-                    )
+
+                        document.querySelector('.preview').srcdoc = temp
+                        Editor.onDidChangeModelContent(() => {
+                            document.querySelector('.preview').srcdoc = Editor.getValue()
+                        });
+                    })
             })
 
     </script>
