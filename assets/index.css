@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    font-family: Segoe WPC, Segoe UI, sans-serif;
+}
+
+#app {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+}
+
+#app>* {
+    height: 100%;
+    width: 50%;
+    border: 0;
+}
+
+.load-editor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100% !important;
+}
+
+.editor {
+    display: flex;
+    flex-direction: column;
+}
+
+.editor .header {
+    display: flex;
+    background-color: #252526;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.editor .header img {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.editor .header img:hover {
+    background-color: rgba(90, 93, 94, 0.31);
+}
+
+.editor .header input[type=checkbox] {
+    font-size: 12px;
+}
+
+.editor .header .tools {
+    display: flex;
+    align-items: center;
+}
+
+.editor .header .tools>* {
+    cursor: pointer;
+}
+
+.editor .header .tools label {
+    font-size: 12px;
+    color: #959da5;
+    display: flex;
+}
+
+.editor .tabs {
+    display: flex;
+}
+
+.editor .tabs .tab {
+    border-right: 1px solid rgb(37, 37, 38);
+    background-color: rgb(45, 45, 45);
+    color: rgba(255, 255, 255, 0.5);
+    width: 120px;
+    height: 35px;
+    min-width: fit-content;
+    flex-shrink: 0;
+    line-height: 35px;
+    justify-content: center;
+    font-size: 13px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.editor .tabs .tab.action {
+    border-right: 1px solid rgb(37, 37, 38);
+    background-color: rgb(30, 30, 30);
+    color: rgb(255, 255, 255);
+}
+
+.editor .code {
+    flex: 1
+}

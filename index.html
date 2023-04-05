@@ -7,54 +7,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./dist/index.global.js"></script>
+    <script src="./assets/vue.js"></script>
     <link rel="stylesheet" href="./dist/index.css">
-    <style>
-        body {
-            margin: 0
-        }
-
-        #app {
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-        }
-
-        #app>* {
-            height: 100%;
-            width: 50%;
-            border: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="./assets/index.css">
 </head>
 
 <body>
     <div id="app">
-        <div class="code"></div>
-        <iframe class="preview"></iframe>
+        <div v-if="!isLoad" class="load-editor">
+            <img src="./assets/github.icon.svg" alt="">
+            <h2>正在设置web编辑器 . . .</h2>
+        </div>
+        <div class="editor" v-show="isLoad">
+            <div class="header" v-if="language">
+                <div class="tabs">
+                    <div :class="['tab', _length === language ? 'action': '']" v-for="_length in languages"
+                        @click="changeCode(`${_length}`)">{{_length}}
+                    </div>
+                </div>
+                <div class="tools">
+                    <img @click="onRun" src="./assets/run.svg" alt="运行" title="运行">
+                    <label for="realTime">
+                        <input type="checkbox" id="realTime" v-model="isRealTime"/>实时运行
+                    </label>
+                </div>
+            </div>
+            <div class="code"></div>
+        </div>
+        <iframe id="preview" v-show="isLoad"></iframe>
     </div>
     <script type="module">
-        fetch('./template/index.xml')
-            .then(response => response.text())
-            .then(async temp => {
-                const basePath = "https://cdn.jsdelivr.net/npm/@cgxqd/monaco-editor";
-                monaco
-                    // 初始化monaco worker
-                    .initWorkerUrl(basePath, ['json', 'ts', 'html', 'css'])
-                    // 创建编辑器
-                    .then(() => {
-                        const Editor = monaco.editor.create(document.querySelector('.code'), {
-                            value: temp,
-                            language: "html",
-                            theme: "vs-dark",
-                            automaticLayout: true,
-                        })
+        const { createApp, onMounted, defineComponent, h, ref } = Vue
 
-                        document.querySelector('.preview').srcdoc = temp
-                        Editor.onDidChangeModelContent(() => {
-                            document.querySelector('.preview').srcdoc = Editor.getValue()
-                        });
+        let Editor = null
+        const basePath = "";
+        const codeMap = new Map([
+            ['js', { language: 'javascript' }],
+        ])
+        createApp({
+            setup() {
+                const isLoad = ref(false)
+                const languages = ref(['html', 'css', 'js'])
+                const language = ref('html')
+                const isRealTime = ref(true)
+                function htmlDecode(str) {
+                    var temp = "";
+                    if (str.length == 0) return "";
+                    temp = str.replace(/&amp;/g, "&");
+                    temp = temp.replace(/&lt;/g, "<");
+                    temp = temp.replace(/&gt;/g, ">");
+                    temp = temp.replace(/&nbsp;/g, " ");
+                    temp = temp.replace(/&#39;/g, "\'");
+                    temp = temp.replace(/&quot;/g, "\"");
+                    return temp;
+                }
+                function changeCode(name) {
+                    language.value = name
+                    const code = codeMap.get(name)
+                    var currentState = Editor.saveViewState();
+                    var currentModel = Editor.getModel();
+                    codeMap.forEach(item => {
+                        if (currentModel === item.model) item.state = currentState
                     })
-            })
+                    if (code.model) {
+                        Editor.setModel(code.model);
+                        Editor.restoreViewState(code.state);
+                    }
+                    else {
+                        const newModel = monaco.editor.createModel(code.content, code.language);
+                        Editor.setModel(newModel);
+                        code.model = newModel
+                    }
+                    Editor.focus();
+                }
+
+                function getCode(name) {
+                    const code = codeMap.get(name)
+                    return code.model ? code.model.getValue() : code.content
+                }
+
+                function onRun() {
+                    renderPreView()
+                }
+
+                function renderPreView() {
+                    preview.srcdoc = getCode('html')
+                        + htmlDecode(`&lt;style&gt;${getCode('css')}&lt;/style&gt;`)
+                        + htmlDecode(`&lt;script&gt;${getCode('js')}&lt;/script&gt;`)
+                }
+                onMounted(async () => {
+                    const startTime = Date.now()
+                    const htmlTemp = await fetch('./template/index.xml').then(response => response.text())
+                    const cssTemp = await fetch('./template/style.css').then(response => response.text())
+                    // 初始化monaco worker
+                    await monaco.initWorkerUrl(basePath, ['ts', 'html', 'css'])
+                    // 创建编辑器
+                    Editor = monaco.editor.create(document.querySelector('.code'), {
+                        theme: "vs-dark",
+                        automaticLayout: true,
+                    })
+                    // 设置编辑器模型
+                    const model = monaco.editor.createModel(htmlTemp, language.value);
+                    Editor.setModel(model);
+
+                    codeMap.set(language.value, { language: language.value, model })
+                    codeMap.set('css', { language: 'css', content: cssTemp })
+
+                    renderPreView()
+                    const delay = (Date.now() - startTime) < 1500 ? 1500 : 0
+                    setTimeout(() => isLoad.value = true, delay);
+                    Editor.onDidChangeModelContent(() => isRealTime.value && renderPreView());
+
+                })
+                return { changeCode, renderPreView, languages, language, isLoad, onRun, isRealTime }
+            }
+        }).mount('#app')
+
 
     </script>
 </body>

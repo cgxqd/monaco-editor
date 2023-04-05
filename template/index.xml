@@ -1,37 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Hovering card</title>
-    <link rel="stylesheet" href="./template/style.css">
-</head>
-
-<body>
-    <div class="card">
-        <nav class="nav-bar"></nav>
-        <div class="photo-profile">
-            <a href="https://github.com/cgxqd" target="_blank">
-                <img class="avatar" src="./template/avatar.jpg" alt="">
-            </a>
-        </div>
-        <section class="text">
-            <h1 class="name">cgxqd (Junkman)</h1>
-            <small>前端开发工程师</small>
-            <p>构建令人愉快的应用程序！</p>
-            <a class="find-me" href="javascript:;">Find me</a>
-            <hr>
-        </section>
-        <section class="social">
-            <div class="github center">
-                <a class="logo" href="https://github.com/cgxqd" target="_blank">
-                    <img src="./template/github.svg" alt="Github Logo"></a>
-                <h2>Github</h2>
-            </div>
-        </section>
+<div class="card">
+    <nav class="nav-bar"></nav>
+    <div class="photo-profile">
+        <a href="https://github.com/cgxqd" target="_blank">
+            <img class="avatar" src="./assets/avatar.jpg" alt="">
+        </a>
     </div>
-</body>
-
-</html>
+    <section class="text">
+        <h1 class="name">cgxqd (Junkman)</h1>
+        <small>前端开发工程师</small>
+        <p>构建令人愉快的应用程序！</p>
+        <a class="find-me" href="javascript:;">Find me</a>
+        <hr>
+    </section>
+    <section class="social">
+        <div class="github center">
+            <a class="logo" href="https://github.com/cgxqd" target="_blank">
+                <img src="./assets/github.svg" alt="Github Logo"></a>
+            <h2>Github</h2>
+        </div>
+    </section>
+</div>
